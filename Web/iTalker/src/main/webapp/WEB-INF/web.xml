@@ -2,7 +2,7 @@
 
 <web-app>
 
-    <display-name>Jersey</display-name>
+    <display-name>iTalker</display-name>
 
     <servlet>
         <servlet-name>ITalkerApiServlet</servlet-name>
