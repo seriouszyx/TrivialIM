@@ -13,8 +13,8 @@ import butterknife.ButterKnife;
 public abstract class Activity extends AppCompatActivity {
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // 在界面未初始化之前调用的初始化窗口
         initWindows();
 

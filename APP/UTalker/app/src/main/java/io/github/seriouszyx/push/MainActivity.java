@@ -1,18 +1,22 @@
 package io.github.seriouszyx.push;
 
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+
+import android.widget.EditText;
 import android.widget.TextView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.github.seriouszyx.common.app.Activity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements IView {
 
-    @BindView(R.id.txt_test)
-    TextView mTestText;
+    @BindView(R.id.txt_result)
+    TextView mResultText;
+
+    @BindView(R.id.edit_query)
+    EditText mInputText;
+
+    private IPresenter mPresenter;
 
     @Override
     protected int getContentLayoutId() {
@@ -20,8 +24,23 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void initWidget() {
-        super.initWidget();
-        mTestText.setText("Test Hello");
+    protected void initData() {
+        super.initData();
+        mPresenter = new Presenter(this);
+    }
+
+    @OnClick(R.id.btn_submit)
+    void onSubmit() {
+        mPresenter.search();
+    }
+
+    @Override
+    public String getInputString() {
+        return mInputText.getText().toString();
+    }
+
+    @Override
+    public void setResultString(String string) {
+        mResultText.setText(string);
     }
 }
