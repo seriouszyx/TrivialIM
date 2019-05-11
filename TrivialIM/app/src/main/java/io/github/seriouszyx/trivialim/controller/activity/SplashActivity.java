@@ -9,6 +9,7 @@ import android.os.Message;
 import com.hyphenate.chat.EMClient;
 
 import io.github.seriouszyx.trivialim.R;
+import io.github.seriouszyx.trivialim.model.Model;
 
 // 欢迎页面
 public class SplashActivity extends Activity {
@@ -30,7 +31,7 @@ public class SplashActivity extends Activity {
      *   判断进入主页面还是登录页面
      */
     private void toMainOrLogin() {
-        new Thread() {
+        Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
             @Override
             public void run() {
                 // 判断此账号是否已经登陆过
@@ -51,7 +52,7 @@ public class SplashActivity extends Activity {
                 // 结束当前页面
                 finish();
             }
-        }.start();
+        });
     }
 
     @Override

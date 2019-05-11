@@ -5,6 +5,8 @@ import android.app.Application;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 
+import io.github.seriouszyx.trivialim.model.Model;
+
 public class IMApplication extends Application {
 
     @Override
@@ -15,10 +17,12 @@ public class IMApplication extends Application {
         EMOptions options = new EMOptions();
         // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
-        // 设置许耀桐以后才能接受群邀请
+        // 设置同意以后才能接受群邀请
         options.setAutoAcceptGroupInvitation(false);
 
-
         EaseUI.getInstance().init(this, options);
+
+        // 初始化数据模型层
+        Model.getInstance().init(this);
     }
 }
