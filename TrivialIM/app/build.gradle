@@ -16,7 +16,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    //use legacy for android 6.0
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
