@@ -10,6 +10,7 @@ import com.hyphenate.chat.EMClient;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
+import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 
 // 欢迎页面
 public class SplashActivity extends Activity {
@@ -38,10 +39,17 @@ public class SplashActivity extends Activity {
                 if (EMClient.getInstance().isLoggedInBefore()) {
                     // 登陆过
                     // 获取到当前登录用户的信息
-
-                    // 跳转到主页面
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    UserInfo account = Model.getInstance().getUserAccountDao().
+                            getAccountByHxId(EMClient.getInstance().getCurrentUser());
+                    if (account == null) {
+                        // 跳转到登录页面
+                        Intent intent = new Intent(SplashActivity.this, LoginAcitivity.class);
+                        startActivity(intent);
+                    } else {
+                        // 跳转到主页面
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
                 } else {
                     // 没登录过
                     // 跳转到登录页面
