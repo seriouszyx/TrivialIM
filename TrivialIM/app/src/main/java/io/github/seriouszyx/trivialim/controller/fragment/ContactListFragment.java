@@ -1,11 +1,13 @@
 package io.github.seriouszyx.trivialim.controller.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 
 import io.github.seriouszyx.trivialim.R;
+import io.github.seriouszyx.trivialim.controller.activity.AddContactActivity;
 
 // 联系人列表页面
 public class ContactListFragment extends EaseContactListFragment {
@@ -20,5 +22,18 @@ public class ContactListFragment extends EaseContactListFragment {
         View headerView = View.inflate(getActivity(), R.layout.header_fragment_contact, null);
 
         listView.addHeaderView(headerView);
+    }
+
+    @Override
+    protected void setUpView() {
+        super.setUpView();
+        // 添加按钮的点击事件处理
+        titleBar.setRightLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddContactActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
