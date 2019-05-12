@@ -5,7 +5,9 @@ import android.content.Context;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 import io.github.seriouszyx.trivialim.model.dao.UserAccountDao;
+import io.github.seriouszyx.trivialim.model.db.DBManager;
 
 // 数据模型层全局类
 public class Model {
@@ -15,6 +17,7 @@ public class Model {
 
     // 创建对象
     private static Model model = new Model();
+    private DBManager dbManager;
 
     // 私有化构造
     private Model() {
@@ -41,7 +44,21 @@ public class Model {
     }
 
     // 用户登陆成功后的处理方法
-    public void loginSuccess() {
+    public void loginSuccess(UserInfo account) {
+        // 校验
+        if (account == null) {
+            return;
+        }
+
+        if (dbManager != null) {
+            dbManager.close();
+        }
+
+        dbManager = new DBManager(mContext, account.getName());
+    }
+
+    public DBManager getDbManager() {
+        return dbManager;
     }
 
     // 获取用户账号数据库的操作类对象
