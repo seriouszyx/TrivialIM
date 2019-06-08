@@ -58,6 +58,16 @@ GroupListActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        // 跳转到新建群
+        ll_grouplist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GroupListActivity.this, NewGroupActivity.class);
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void initData() {
@@ -105,6 +115,14 @@ GroupListActivity extends Activity {
         lv_grouplist = findViewById(R.id.lv_grouplist);
         View headerView = View.inflate(this, R.layout.header_grouplist, null);
         lv_grouplist.addHeaderView(headerView);
+
         ll_grouplist = headerView.findViewById(R.id.ll_grouplist);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refresh();
     }
 }
