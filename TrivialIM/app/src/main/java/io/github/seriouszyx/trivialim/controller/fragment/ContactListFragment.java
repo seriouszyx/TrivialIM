@@ -44,6 +44,13 @@ public class ContactListFragment extends EaseContactListFragment {
         }
     };
     private LinearLayout ll_contact_invite;
+    private BroadcastReceiver ContactChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 刷新页面
+            refreshContact();
+        }
+    };
 
     @Override
     protected void initView() {
@@ -94,6 +101,7 @@ public class ContactListFragment extends EaseContactListFragment {
         // 注册广播
         mLBM = LocalBroadcastManager.getInstance(getActivity());
         mLBM.registerReceiver(ContactInviteChangeReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(ContactChangeReceiver, new IntentFilter(Constant.CONTACT_CHANGED));
 
         // 从环信服务器获取所有的联系人信息
         getContactFromHxServer();
@@ -155,5 +163,6 @@ public class ContactListFragment extends EaseContactListFragment {
     public void onDestroy() {
         super.onDestroy();
         mLBM.unregisterReceiver(ContactInviteChangeReceiver);
+        mLBM.unregisterReceiver(ContactChangeReceiver);
     }
 }
