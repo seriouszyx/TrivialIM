@@ -10,11 +10,21 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.activity.AddContactActivity;
 import io.github.seriouszyx.trivialim.controller.activity.InviteActivity;
+import io.github.seriouszyx.trivialim.model.Model;
+import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 import io.github.seriouszyx.trivialim.utils.Constant;
 import io.github.seriouszyx.trivialim.utils.SpUtils;
 
@@ -84,6 +94,61 @@ public class ContactListFragment extends EaseContactListFragment {
         // 注册广播
         mLBM = LocalBroadcastManager.getInstance(getActivity());
         mLBM.registerReceiver(ContactInviteChangeReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+
+        // 从环信服务器获取所有的联系人信息
+        getContactFromHxServer();
+    }
+
+    private void getContactFromHxServer() {
+        Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // 获取到所有好友的环信id
+                    List<String> hxids = EMClient.getInstance().contactManager().getAllContactsFromServer();
+
+                    // 校验
+                    if (hxids != null && hxids.size() >= 0) {
+                        List<UserInfo> contacts = new ArrayList<>();
+                        for (String hxid : hxids) {
+                            UserInfo userInfo = new UserInfo(hxid);
+                            contacts.add(userInfo);
+                        }
+                        // 保存好友信息到本地数据库
+                        Model.getInstance().getDbManager().getContactTableDao().saveContacts(contacts, true);
+                        if (getActivity() == null) {
+                            return;
+                        }
+                        // 刷新页面
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshContact();
+                            }
+                        });
+                    }
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void refreshContact() {
+        // 获取数据
+        List<UserInfo> contacts = Model.getInstance().getDbManager().getContactTableDao().getContacts();
+        // 校验
+        if (contacts != null && contacts.size() >= 0) {
+            // 设置数据
+            Map<String, EaseUser> contactsMap = new HashMap<>();
+            for (UserInfo contact : contacts) {
+                EaseUser easeUser = new EaseUser(contact.getHxid());
+                contactsMap.put(contact.getHxid(), easeUser);
+            }
+            setContactsMap(contactsMap);
+            // 刷新页面
+            refresh();
+        }
     }
 
     @Override
