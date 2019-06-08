@@ -28,6 +28,7 @@ import java.util.Map;
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.activity.AddContactActivity;
 import io.github.seriouszyx.trivialim.controller.activity.ChatActivity;
+import io.github.seriouszyx.trivialim.controller.activity.GroupListActivity;
 import io.github.seriouszyx.trivialim.controller.activity.InviteActivity;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.UserInfo;
@@ -79,8 +80,23 @@ public class ContactListFragment extends EaseContactListFragment {
         setContactListItemClickListener(new EaseContactListItemClickListener() {
             @Override
             public void onListItemClicked(EaseUser user) {
+                if (user == null)
+                    return;
+
+
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
                 intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername());
+                startActivity(intent);
+            }
+        });
+
+        // 跳转到群组列表页面
+        LinearLayout ll_contact_group = headerView.findViewById(R.id.ll_contact_group);
+        ll_contact_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GroupListActivity.class);
+
                 startActivity(intent);
             }
         });
