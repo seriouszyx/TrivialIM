@@ -1,6 +1,11 @@
 package io.github.seriouszyx.trivialim.controller.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +21,7 @@ import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.adapter.InviteAdapter;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.InvitationInfo;
+import io.github.seriouszyx.trivialim.utils.Constant;
 
 // 邀请页面
 public class InviteActivity extends Activity {
@@ -23,6 +29,15 @@ public class InviteActivity extends Activity {
     private ListView lv_invite;
 
     private InviteAdapter inviteAdapter;
+
+    private final BroadcastReceiver ContactInviteChangedReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // 刷新页面
+            refresh();
+        }
+    };
 
     private InviteAdapter.OnInviteListener mOnInvitationListener = new InviteAdapter.OnInviteListener() {
         @Override
@@ -93,6 +108,7 @@ public class InviteActivity extends Activity {
             });
         }
     };
+    private LocalBroadcastManager mLBM;
 
 
     @Override
@@ -111,6 +127,10 @@ public class InviteActivity extends Activity {
 
         // 刷新
         refresh();
+
+        // 注册邀请信息变化的广播
+        mLBM = LocalBroadcastManager.getInstance(this);
+        mLBM.registerReceiver(ContactInviteChangedReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
     }
 
     private void refresh() {
@@ -120,5 +140,11 @@ public class InviteActivity extends Activity {
 
     private void initView() {
         lv_invite = findViewById(R.id.lv_invite);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLBM.unregisterReceiver(ContactInviteChangedReceiver);
     }
 }
