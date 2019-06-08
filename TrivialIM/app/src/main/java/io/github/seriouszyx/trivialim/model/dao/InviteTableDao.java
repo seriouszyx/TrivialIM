@@ -58,7 +58,7 @@ public class InviteTableDao {
             invitationInfo.setReason(cursor.getString(cursor.getColumnIndex(InviteTable.COL_REASON)));
             invitationInfo.setStatus(int2InviteStatus(cursor.getInt(cursor.getColumnIndex(InviteTable.COL_STATUS))));
 
-            String groupId = cursor.getString(cursor.getColumnIndex(InviteTable.COL_USER_HXID));
+            String groupId = cursor.getString(cursor.getColumnIndex(InviteTable.COL_GROUP_ID));
             if (groupId == null) {
                 // 联系人邀请信息
                 UserInfo userInfo = new UserInfo();
@@ -69,7 +69,7 @@ public class InviteTableDao {
             } else {
                 // 群组的邀请信息
                 GroupInfo groupInfo = new GroupInfo();
-                groupInfo.setGroupId(cursor.getColumnName(cursor.getColumnIndex(InviteTable.COL_USER_HXID)));
+                groupInfo.setGroupId(cursor.getColumnName(cursor.getColumnIndex(InviteTable.COL_GROUP_ID)));
                 groupInfo.setGroupName(cursor.getColumnName(cursor.getColumnIndex(InviteTable.COL_GROUP_NAME)));
                 groupInfo.setInvitePerson(cursor.getColumnName(cursor.getColumnIndex(InviteTable.COL_USER_HXID)));
                 invitationInfo.setGroup(groupInfo);

@@ -85,4 +85,10 @@ public class ContactListFragment extends EaseContactListFragment {
         mLBM = LocalBroadcastManager.getInstance(getActivity());
         mLBM.registerReceiver(ContactInviteChangeReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mLBM.unregisterReceiver(ContactInviteChangeReceiver);
+    }
 }
