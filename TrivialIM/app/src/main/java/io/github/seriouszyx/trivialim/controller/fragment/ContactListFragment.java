@@ -6,11 +6,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.exceptions.HyphenateException;
@@ -22,6 +27,7 @@ import java.util.Map;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.activity.AddContactActivity;
+import io.github.seriouszyx.trivialim.controller.activity.ChatActivity;
 import io.github.seriouszyx.trivialim.controller.activity.InviteActivity;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.UserInfo;
@@ -51,6 +57,7 @@ public class ContactListFragment extends EaseContactListFragment {
             refreshContact();
         }
     };
+    private String mHxid;
 
     @Override
     protected void initView() {
@@ -67,6 +74,16 @@ public class ContactListFragment extends EaseContactListFragment {
 
         // 获取邀请信息条目的对象
         ll_contact_invite = headerView.findViewById(R.id.ll_contact_invite);
+
+        // 设置listview条目的点击事件
+        setContactListItemClickListener(new EaseContactListItemClickListener() {
+            @Override
+            public void onListItemClicked(EaseUser user) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -105,6 +122,67 @@ public class ContactListFragment extends EaseContactListFragment {
 
         // 从环信服务器获取所有的联系人信息
         getContactFromHxServer();
+
+        // 绑定ListView和contextmenu
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // 获取环信id
+        int position = ((AdapterView.AdapterContextMenuInfo)menuInfo).position;
+        EaseUser easeUser = (EaseUser) listView.getItemAtPosition(position);
+        mHxid = easeUser.getUsername();
+        // 添加布局
+        getActivity().getMenuInflater().inflate(R.menu.delete, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.contact_delete) {
+            // 执行删除选中的联系人操作
+            deleteContact();
+            // 将事件销毁掉
+            return true;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    /**
+     * 删除选中的联系人
+     */
+    private void deleteContact() {
+        Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMClient.getInstance().contactManager().deleteContact(mHxid);
+                    Model.getInstance().getDbManager().getContactTableDao().deleteContactByHxId(mHxid);
+                    if (getActivity() == null) {
+                        return;
+                    }
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "删除" + mHxid + "成功", Toast.LENGTH_SHORT).show();
+                            refreshContact();
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+
+                    if (getActivity() == null)
+                        return;
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity(), "删除" + mHxid + "失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void getContactFromHxServer() {
