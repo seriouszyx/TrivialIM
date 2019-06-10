@@ -30,7 +30,7 @@ public class InviteActivity extends Activity {
 
     private InviteAdapter inviteAdapter;
 
-    private final BroadcastReceiver ContactInviteChangedReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver InviteChangedReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -130,7 +130,8 @@ public class InviteActivity extends Activity {
 
         // 注册邀请信息变化的广播
         mLBM = LocalBroadcastManager.getInstance(this);
-        mLBM.registerReceiver(ContactInviteChangedReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(InviteChangedReceiver, new IntentFilter(Constant.CONTACT_INVITE_CHANGED));
+        mLBM.registerReceiver(InviteChangedReceiver, new IntentFilter(Constant.GROUP_INVITE_CHANGED));
     }
 
     private void refresh() {
@@ -145,6 +146,6 @@ public class InviteActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mLBM.unregisterReceiver(ContactInviteChangedReceiver);
+        mLBM.unregisterReceiver(InviteChangedReceiver);
     }
 }
