@@ -1,6 +1,7 @@
 package io.github.seriouszyx.trivialim.controller.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -79,8 +80,9 @@ public class InviteAdapter extends BaseAdapter {
         // 3 显示当前Item数据
         UserInfo user = invitationInfo.getUser();
 
+
         if (user != null) {
-            // 当前时联系人
+            // 当前是联系人
             holder.name.setText(invitationInfo.getUser().getName());
 
             holder.accept.setVisibility(View.GONE);
@@ -129,7 +131,85 @@ public class InviteAdapter extends BaseAdapter {
 
         } else {
             // 群组
+            holder.name.setText(invitationInfo.getGroup().getInvitePerson());
 
+            holder.accept.setVisibility(View.GONE);
+            holder.reject.setVisibility(View.GONE);
+            //显示原因
+            switch (invitationInfo.getStatus()){
+                //你的群申请已经被接受
+                case GROUP_APPLICATION_ACCEPTED:
+                    holder.reason.setText("你的群申请已经被接受");
+                    break;
+                //你的群邀请已经被接受
+                case GROUP_INVITE_ACCEPTED:
+                    holder.reason.setText("你的群邀请已经被接受");
+                    break;
+                //你的群申请已经被拒绝
+                case GROUP_APPLICATION_DECLINED:
+                    holder.reason.setText("你的群申请已经被拒绝");
+                    break;
+                //你的群邀请已经被拒绝
+                case GROUP_INVITE_DECLINED:
+                    holder.reason.setText("你的群邀请已经被拒绝");
+                    break;
+                //你收到了群邀请
+                case NEW_GROUP_INVITE:
+                    holder.accept.setVisibility(View.VISIBLE);
+                    holder.reject.setVisibility(View.VISIBLE);
+                    //接受邀请
+                    holder.accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onInviteAccept(invitationInfo);
+                        }
+                    });
+                    //拒绝邀请
+                    holder.reject.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onInviteReject(invitationInfo);
+                        }
+                    });
+                    holder.reason.setText("你收到了群邀请");
+                    break;
+                //你收到了群申请
+                case NEW_GROUP_APPLICATION:
+                    holder.accept.setVisibility(View.VISIBLE);
+                    holder.reject.setVisibility(View.VISIBLE);
+                    //接受申请
+                    holder.accept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onApplicationAccept(invitationInfo);
+                        }
+                    });
+                    //拒绝申请
+                    holder.reject.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnInviteListener.onApplicationReject(invitationInfo);
+                        }
+                    });
+                    holder.reason.setText("你收到了群申请");
+                    break;
+                //你接受了群邀请
+                case GROUP_ACCEPT_INVITE:
+                    holder.reason.setText("你接受了群邀请");
+                    break;
+                //你批准了群申请
+                case GROUP_ACCEPT_APPLICATION:
+                    holder.reason.setText("你批准了群申请");
+                    break;
+//                //你拒绝了群邀请
+//                case GROUP_REJECT_INVITE:
+//                    holder.reason.setText("你拒绝了群邀请");
+//                    break;
+//                //你拒绝了群申请
+//                case GROUP_REJECT_APPLICATION:
+//                    holder.reason.setText("你拒绝了群申请");
+//                    break;
+            }
         }
 
         // 4 返回View
@@ -149,5 +229,14 @@ public class InviteAdapter extends BaseAdapter {
         void onAccept(InvitationInfo invitationInfo);
         // 联系人拒绝按钮的点击事件
         void onReject(InvitationInfo invitationInfo);
+        // 接受邀请按钮处理
+        void onInviteAccept(InvitationInfo invitationInfo);
+        // 拒绝邀请按钮处理
+        void onInviteReject(InvitationInfo invitationInfo);
+        // 接受申请按钮处理
+        void onApplicationAccept(InvitationInfo invitationInfo);
+        // 拒绝申请按钮处理
+        void onApplicationReject(InvitationInfo invitationInfo);
+
     }
 }

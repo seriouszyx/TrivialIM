@@ -101,7 +101,7 @@ public class ContactListFragment extends EaseContactListFragment {
         });
 
         // 跳转到群组列表页面
-        LinearLayout ll_contact_group = headerView.findViewById(R.id.ll_contact_group);
+        View ll_contact_group = headerView.findViewById(R.id.ll_contact_group);
         ll_contact_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

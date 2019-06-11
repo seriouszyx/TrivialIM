@@ -30,7 +30,9 @@ public class InviteActivity extends Activity {
 
     private InviteAdapter inviteAdapter;
 
-    private final BroadcastReceiver InviteChangedReceiver = new BroadcastReceiver() {
+    private LocalBroadcastManager mLBM;
+
+    private BroadcastReceiver InviteChangedReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -107,8 +109,117 @@ public class InviteActivity extends Activity {
                 }
             });
         }
+
+        @Override
+        public void onInviteAccept(final InvitationInfo invitationInfo) {
+            Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        EMClient.getInstance().groupManager().acceptInvitation(invitationInfo.getGroup().getGroupId(), invitationInfo.getGroup().getInvitePerson());
+                        invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_ACCEPT_INVITE);
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invitationInfo);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this, "接受邀请", Toast.LENGTH_SHORT).show();
+                                refresh();
+                            }
+                        });
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                        
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this, "接受邀请失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        @Override
+        public void onInviteReject(final InvitationInfo invitationInfo) {
+            Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        EMClient.getInstance().groupManager().declineInvitation(invitationInfo.getGroup().getGroupId(), invitationInfo.getGroup().getInvitePerson(), "拒绝邀请");
+                        invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_REJECT_INVITE);
+                        Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invitationInfo);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this, "拒绝邀请", Toast.LENGTH_SHORT).show();
+                                refresh();
+                            }
+                        });
+                    } catch (HyphenateException e) {
+                        e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(InviteActivity.this, "拒绝邀请失败", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                }
+            });
+        }
+
+        @Override
+        public void onApplicationAccept(final InvitationInfo invitationInfo) {
+            try {
+                EMClient.getInstance().groupManager().acceptInvitation(invitationInfo.getGroup().getGroupId(), invitationInfo.getGroup().getInvitePerson());
+                invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_ACCEPT_APPLICATION);
+                Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invitationInfo);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(InviteActivity.this, "接受申请", Toast.LENGTH_SHORT).show();
+                        refresh();
+                    }
+                });
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(InviteActivity.this, "接受申请失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onApplicationReject(final InvitationInfo invitationInfo) {
+            try {
+                EMClient.getInstance().groupManager().declineInvitation(invitationInfo.getGroup().getGroupId(), invitationInfo.getGroup().getInvitePerson(), "拒绝申请");
+                invitationInfo.setStatus(InvitationInfo.InvitationStatus.GROUP_REJECT_APPLICATION);
+                Model.getInstance().getDbManager().getInviteTableDao().addInvitation(invitationInfo);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(InviteActivity.this, "拒绝申请", Toast.LENGTH_SHORT).show();
+                        refresh();
+                    }
+                });
+            } catch (HyphenateException e) {
+                e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(InviteActivity.this, "拒绝申请失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
     };
-    private LocalBroadcastManager mLBM;
+
 
 
     @Override
