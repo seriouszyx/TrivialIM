@@ -10,30 +10,28 @@
         android:id="@+id/fl_main"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        
-    </FrameLayout>
+        android:layout_weight="1" />
 
     <RadioGroup
         android:id="@+id/rg_main"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp">
-
         <RadioButton
             android:id="@+id/rb_main_chat"
-            android:text="会话"
-            style="@style/MainButtonStyle"
-            />
+            android:drawableTop="@drawable/rb_main_drawable_selector"
+            android:text="聊天"
+            style="@style/MainButtonStyle"/>
         <RadioButton
             android:id="@+id/rb_main_contact"
             android:text="联系人"
+            android:drawableTop="@drawable/rb_main_contact_drawable_selector"
             style="@style/MainButtonStyle"/>
+
         <RadioButton
             android:id="@+id/rb_main_setting"
             android:text="设置"
-            android:textSize="20sp"
+            android:drawableTop="@drawable/rb_main_setting_drawable_selector"
             style="@style/MainButtonStyle"/>
     </RadioGroup>
-
 </LinearLayout>

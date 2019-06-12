@@ -344,3 +344,4 @@ public class GroupDetailActivity extends Activity {
     }
 
 }
+

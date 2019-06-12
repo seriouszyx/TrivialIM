@@ -7,18 +7,17 @@
     android:orientation="vertical"
     tools:context=".controller.activity.GroupListActivity">
 
+
     <com.hyphenate.easeui.widget.EaseTitleBar
         app:titleBarTitle="群组列表"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </com.hyphenate.easeui.widget.EaseTitleBar>
 
     <ListView
         android:id="@+id/lv_grouplist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </ListView>
 
 </LinearLayout>

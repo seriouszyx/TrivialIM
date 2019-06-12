@@ -18,17 +18,15 @@ import io.github.seriouszyx.trivialim.R;
  * 群组列表适配器
  */
 public class GroupListAdapter extends BaseAdapter {
-
     private Context mContext;
     private List<EMGroup> mGroups = new ArrayList<>();
-
-    public GroupListAdapter(Context context) {
+    public GroupListAdapter(Context context){
         mContext = context;
     }
 
-    // 刷新
-    public void refresh(List<EMGroup> groups) {
-        if (groups != null && groups.size() >= 0) {
+    //刷新方法
+    public void refresh(List<EMGroup> groups){
+        if(groups != null && groups.size() >= 0){
             mGroups.clear();
             mGroups.addAll(groups);
             notifyDataSetChanged();
@@ -42,7 +40,7 @@ public class GroupListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mGroups.get(position);
+        return null;
     }
 
     @Override
@@ -52,25 +50,29 @@ public class GroupListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-        if (convertView == null ) {
-            holder = new ViewHolder();
-            convertView = View.inflate(mContext, R.layout.item_grouplist, null);
-            holder.name = convertView.findViewById(R.id.tv_grouplist_name);
+        //创建或获取viewholder
+        ViewHolder hodler = null;
+        if(convertView == null){
+            hodler = new ViewHolder();
+            convertView = View.inflate(mContext, R.layout.item_grouplist,null);
 
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
+            hodler.name = (TextView)convertView.findViewById(R.id.tv_grouplist_name);
+            convertView.setTag(hodler);
+        }else {
+            hodler =(ViewHolder) convertView.getTag();
         }
 
+        //获取当前item数据
         EMGroup emGroup = mGroups.get(position);
 
-        holder.name.setText(emGroup.getGroupName());
+        //显示数据
+        hodler.name.setText(emGroup.getGroupName());
+        //返回数据
 
         return convertView;
     }
 
-    private class ViewHolder {
+    private class ViewHolder{
         TextView name;
     }
 }

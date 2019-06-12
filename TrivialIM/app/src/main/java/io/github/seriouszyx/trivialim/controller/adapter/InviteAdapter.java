@@ -19,21 +19,20 @@ import io.github.seriouszyx.trivialim.model.bean.UserInfo;
  * 邀请信息列表页面的适配器
  */
 public class InviteAdapter extends BaseAdapter {
-
     private Context mContext;
-
     private List<InvitationInfo> mInvitationInfos = new ArrayList<>();
-
     private OnInviteListener mOnInviteListener;
 
-    public InviteAdapter(Context context, OnInviteListener onInviteListener) {
+    public InviteAdapter(Context context, OnInviteListener OnInviteListener) {
         mContext = context;
-        mOnInviteListener = onInviteListener;
+        mOnInviteListener = OnInviteListener;
     }
 
-    // 刷新数据的方法
+    //刷新数据的方法
     public void refresh(List<InvitationInfo> invitationInfos) {
+
         if (invitationInfos != null && invitationInfos.size() >= 0) {
+
             mInvitationInfos.clear();
 
             mInvitationInfos.addAll(invitationInfos);
@@ -59,8 +58,9 @@ public class InviteAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // 1 获取或创建一个ViewHolder
-        ViewHolder holder = null;
+
+        //1.获取或创建ViewHolder
+        ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = View.inflate(mContext, R.layout.item_invite, null);
@@ -72,41 +72,37 @@ public class InviteAdapter extends BaseAdapter {
 
             convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) convertView.getTag();
+            holder = (ViewHolder)convertView.getTag();
         }
-        // 2 获取当前item数据
+        //2.获取当前item数据
         final InvitationInfo invitationInfo = mInvitationInfos.get(position);
 
-        // 3 显示当前Item数据
+        //3.显示当前item数据
         UserInfo user = invitationInfo.getUser();
-
-
-        if (user != null) {
-            // 当前是联系人
+        if (user != null) {//联系人
+            //名称的展示
             holder.name.setText(invitationInfo.getUser().getName());
-
             holder.accept.setVisibility(View.GONE);
             holder.reject.setVisibility(View.GONE);
-            if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.NEW_INVITE) {
-                // 新邀请
+
+            //原因
+            if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.NEW_INVITE) {//新的邀请
                 if (invitationInfo.getReason() == null) {
                     holder.reason.setText("添加好友");
                 } else {
                     holder.reason.setText(invitationInfo.getReason());
                 }
-
                 holder.accept.setVisibility(View.VISIBLE);
                 holder.reject.setVisibility(View.VISIBLE);
-
-            } else if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.INVITE_ACCEPT) {
-                // 接受邀请
+            }
+            else if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.INVITE_ACCEPT) {//接受邀请
                 if (invitationInfo.getReason() == null) {
                     holder.reason.setText("接受邀请");
                 } else {
                     holder.reason.setText(invitationInfo.getReason());
                 }
-            } else if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER) {
-                // 邀请被接受
+            }
+            else if (invitationInfo.getStatus() == InvitationInfo.InvitationStatus.INVITE_ACCEPT_BY_PEER) {//邀请被接受
                 if (invitationInfo.getReason() == null) {
                     holder.reason.setText("邀请被接受");
                 } else {
@@ -114,7 +110,7 @@ public class InviteAdapter extends BaseAdapter {
                 }
             }
 
-            // 按钮的处理
+            //按钮的处理
             holder.accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -122,6 +118,7 @@ public class InviteAdapter extends BaseAdapter {
                 }
             });
 
+            //拒绝按钮的点击事件处理
             holder.reject.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -129,12 +126,12 @@ public class InviteAdapter extends BaseAdapter {
                 }
             });
 
-        } else {
-            // 群组
+        } else {//群组
+            //显示名称
             holder.name.setText(invitationInfo.getGroup().getInvitePerson());
-
             holder.accept.setVisibility(View.GONE);
             holder.reject.setVisibility(View.GONE);
+
             //显示原因
             switch (invitationInfo.getStatus()){
                 //你的群申请已经被接受
@@ -212,31 +209,34 @@ public class InviteAdapter extends BaseAdapter {
             }
         }
 
-        // 4 返回View
+        //4.返回view
         return convertView;
     }
 
     private class ViewHolder {
         private TextView name;
         private TextView reason;
-
         private Button accept;
         private Button reject;
     }
 
     public interface OnInviteListener {
-        // 联系人接受按钮的点击事件
+        //联系人接受按钮的点击事件
         void onAccept(InvitationInfo invitationInfo);
-        // 联系人拒绝按钮的点击事件
-        void onReject(InvitationInfo invitationInfo);
-        // 接受邀请按钮处理
-        void onInviteAccept(InvitationInfo invitationInfo);
-        // 拒绝邀请按钮处理
-        void onInviteReject(InvitationInfo invitationInfo);
-        // 接受申请按钮处理
-        void onApplicationAccept(InvitationInfo invitationInfo);
-        // 拒绝申请按钮处理
-        void onApplicationReject(InvitationInfo invitationInfo);
 
+        //联系人拒绝按钮的点击事件
+        void onReject(InvitationInfo invitationInfo);
+
+        //接受邀请按钮处理
+        void onInviteAccept(InvitationInfo invitationInfo);
+
+        //拒绝邀请按钮处理
+        void onInviteReject(InvitationInfo invitationInfo);
+
+        //接受申请按钮处理
+        void onApplicationAccept(InvitationInfo invitationInfo);
+
+        //拒绝申请按钮处理
+        void onApplicationReject(InvitationInfo invitationInfo);
     }
 }

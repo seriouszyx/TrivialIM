@@ -17,36 +17,40 @@ import io.github.seriouszyx.trivialim.controller.activity.ChatActivity;
 
 // 会话列表页面
 public class ChatFragment extends EaseConversationListFragment {
-
-
     @Override
     protected void initView() {
         super.initView();
-        // 跳转到会话详情页面
+
+        //跳转到会话详情页面
         setConversationListItemClickListener(new EaseConversationListItemClickListener() {
             @Override
             public void onListItemClicked(EMConversation conversation) {
                 Intent intent = new Intent(getActivity(), ChatActivity.class);
-                intent.putExtra(EaseConstant.EXTRA_USER_ID, conversation.conversationId());
-                // 是否是群聊
-                if (conversation.getType() == EMConversation.EMConversationType.GroupChat) {
-                    intent.putExtra(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_GROUP);
+
+                //传递参数
+                intent.putExtra(EaseConstant.EXTRA_USER_ID,conversation.conversationId());
+
+                //是否是群聊
+                if(conversation.getType() == EMConversation.EMConversationType.GroupChat){
+                    intent.putExtra(EaseConstant.EXTRA_CHAT_TYPE,EaseConstant.CHATTYPE_GROUP);
                 }
+
                 startActivity(intent);
             }
         });
-        // 清空集合数据，适配低版本
+
+        //清空集合数据
         conversationList.clear();
-        // 监听会话消息
+
+        //监听会话消息
         EMClient.getInstance().chatManager().addMessageListener(emMessageListener);
     }
-
     private EMMessageListener emMessageListener = new EMMessageListener() {
         @Override
         public void onMessageReceived(List<EMMessage> list) {
-            // 设置数据
+            //设置数据
             EaseUI.getInstance().getNotifier().notify(list);
-            // 刷新页面
+            //刷新页面
             refresh();
         }
 
@@ -75,4 +79,10 @@ public class ChatFragment extends EaseConversationListFragment {
 
         }
     };
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

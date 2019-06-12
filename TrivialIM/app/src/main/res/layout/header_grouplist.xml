@@ -8,16 +8,16 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:src="@drawable/logo"
         android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:src="@drawable/em_create_group" />
 
     <TextView
-        android:text="创建群组"
-        android:textSize="20sp"
-        android:layout_marginLeft="5dp"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:text="创建群组"
+        android:textSize="20sp" />
 
 </LinearLayout>

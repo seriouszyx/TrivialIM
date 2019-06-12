@@ -16,19 +16,16 @@ public class IMApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // 初始化EaseUI
+        //初始化easeui
         EMOptions options = new EMOptions();
-        // 默认添加好友时，是不需要验证的，改成需要验证
-        options.setAcceptInvitationAlways(false);
-        // 设置同意以后才能接受群邀请
-        options.setAutoAcceptGroupInvitation(false);
+        options.setAcceptInvitationAlways(false); //设置需要同意后才能接受邀请
+        options.setAutoAcceptGroupInvitation(false); //设置需要同意后才能接受群邀请
+        EaseUI.getInstance().init(this,options);
 
-        EaseUI.getInstance().init(this, options);
-
-        // 初始化数据模型层
+        //初始化数据模型层类
         Model.getInstance().init(this);
 
-        // 初始化全局上下文对象
+        //初始化全局上下文
         mContext = this;
     }
 

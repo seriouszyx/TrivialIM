@@ -32,5 +32,4 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ease_appitem_del_btn_normal" />
 
-
 </RelativeLayout>

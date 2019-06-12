@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
@@ -16,11 +17,13 @@ import com.hyphenate.chat.EMClient;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.activity.LoginAcitivity;
+import io.github.seriouszyx.trivialim.controller.activity.PersonDataActivity;
 import io.github.seriouszyx.trivialim.model.Model;
 
 public class SettingFragment extends Fragment {
 
     private Button bt_setting_out;
+    private TextView tv_setting_persondata;
 
     @Nullable
     @Override
@@ -34,6 +37,7 @@ public class SettingFragment extends Fragment {
 
     private void initView(View view) {
         bt_setting_out = view.findViewById(R.id.bt_setting_out);
+        tv_setting_persondata = view.findViewById(R.id.tv_setting_persondata);
     }
 
     @Override
@@ -43,34 +47,44 @@ public class SettingFragment extends Fragment {
     }
 
     private void initData() {
-        // 在button上显示当前用户名称
-        bt_setting_out.setText("退出登录（" + EMClient.getInstance().getCurrentUser() + "）");
+        //在button上显示当前用户对象
+        bt_setting_out.setText("退出登录(" + EMClient.getInstance().getCurrentUser() + ")");
 
-        // 退出登录的逻辑处理
+        tv_setting_persondata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PersonDataActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //退出登录逻辑的处理
         bt_setting_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
                     @Override
                     public void run() {
-                        // 登录环信服务器退出
+                        //登录环信服务器
                         EMClient.getInstance().logout(false, new EMCallBack() {
                             @Override
                             public void onSuccess() {
-                                // 关闭DBHelper
+                                //关闭DBHelper
                                 Model.getInstance().getDbManager().close();
 
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        // 更新UI显示
+                                        //更新UI显示
                                         Toast.makeText(getActivity(), "退出成功", Toast.LENGTH_SHORT).show();
-                                        // 退出回到登录页面
+                                        //回到登录页面
                                         Intent intent = new Intent(getActivity(), LoginAcitivity.class);
                                         startActivity(intent);
+                                        //结束当前页面
                                         getActivity().finish();
                                     }
                                 });
+
                             }
 
                             @Override
@@ -79,6 +93,7 @@ public class SettingFragment extends Fragment {
                                     @Override
                                     public void run() {
                                         Toast.makeText(getActivity(), "退出失败" + s, Toast.LENGTH_SHORT).show();
+
                                     }
                                 });
                             }
@@ -93,4 +108,5 @@ public class SettingFragment extends Fragment {
             }
         });
     }
+
 }

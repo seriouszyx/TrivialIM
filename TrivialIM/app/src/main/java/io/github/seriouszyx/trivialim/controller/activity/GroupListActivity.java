@@ -21,8 +21,7 @@ import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.adapter.GroupListAdapter;
 import io.github.seriouszyx.trivialim.model.Model;
 
-public class
-GroupListActivity extends Activity {
+public class GroupListActivity extends Activity {
 
     private ListView lv_grouplist;
     private GroupListAdapter groupListAdapter;

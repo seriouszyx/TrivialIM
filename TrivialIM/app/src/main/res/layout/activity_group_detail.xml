@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:background="#AB82FF"
         app:title="群信息"
-
         app:titleTextColor="@color/btn_white_normal">
     </android.support.v7.widget.Toolbar>
     <!--<com.hyphenate.easeui.widget.EaseTitleBar-->
