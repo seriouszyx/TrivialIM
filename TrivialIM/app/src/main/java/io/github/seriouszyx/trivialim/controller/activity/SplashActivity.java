@@ -2,9 +2,16 @@ package io.github.seriouszyx.trivialim.controller.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 
 import com.hyphenate.chat.EMClient;
 
@@ -67,13 +74,17 @@ public class SplashActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
         // 发送2秒钟的延时消息
         handler.sendMessageDelayed(Message.obtain(), 2000);
 
     }
+
+
 
     @Override
     protected void onDestroy() {
