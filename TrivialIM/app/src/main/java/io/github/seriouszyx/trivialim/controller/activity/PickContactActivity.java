@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import io.github.seriouszyx.trivialim.utils.Constant;
 /**
  * 选择联系人页面
  */
-public class PickContactActivity extends Activity {
+public class PickContactActivity extends BaseActivity {
 
     private TextView tv_pick_save;
     private ListView lv_pick;
@@ -44,6 +45,11 @@ public class PickContactActivity extends Activity {
         initView();
         initData();
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     public void getData(){
@@ -64,6 +70,8 @@ public class PickContactActivity extends Activity {
     private void initView() {
         tv_pick_save = findViewById(R.id.tv_pick_save);
         lv_pick = findViewById(R.id.lv_pick);
+
+        findViewById(R.id.rl_pick).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void initData() {

@@ -14,13 +14,14 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 
 import com.hyphenate.chat.EMClient;
+import com.jaeger.library.StatusBarUtil;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 
 // 欢迎页面
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     private Handler handler = new Handler() {
         @Override
@@ -78,13 +79,15 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
         // 发送2秒钟的延时消息
         handler.sendMessageDelayed(Message.obtain(), 2000);
 
     }
 
-
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setTranslucentForImageView(this, null);
+    }
 
     @Override
     protected void onDestroy() {

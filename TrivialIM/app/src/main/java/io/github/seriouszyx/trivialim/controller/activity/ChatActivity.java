@@ -16,6 +16,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.jaeger.library.StatusBarUtil;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.utils.Constant;
@@ -23,7 +24,7 @@ import io.github.seriouszyx.trivialim.utils.Constant;
 /**
  * 会话详情页面
  */
-public class ChatActivity extends FragmentActivity {
+public class ChatActivity extends BaseActivity {
 
     private EaseChatFragment easeChatFragment;
     private String mHxid;
@@ -37,6 +38,12 @@ public class ChatActivity extends FragmentActivity {
 
         initData();
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initData() {

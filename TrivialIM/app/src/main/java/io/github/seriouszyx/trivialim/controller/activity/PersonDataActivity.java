@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
+import com.jaeger.library.StatusBarUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +26,7 @@ import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
 
 
-public class PersonDataActivity extends Activity {
+public class PersonDataActivity extends BaseActivity {
 
     private TextView tv_name;
     private ImageView iv_photo;
@@ -50,6 +51,11 @@ public class PersonDataActivity extends Activity {
                 choosePicture(v);
             }
         } );
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initView() {

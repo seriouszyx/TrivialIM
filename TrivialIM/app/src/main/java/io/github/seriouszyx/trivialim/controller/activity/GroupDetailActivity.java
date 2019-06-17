@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ import io.github.seriouszyx.trivialim.utils.Constant;
  */
 
 //群详情页面
-public class GroupDetailActivity extends Activity {
+public class GroupDetailActivity extends BaseActivity {
 
     private GridView gv_groupdetail;
     private Button bt_groupdetail_out;
@@ -53,12 +54,23 @@ public class GroupDetailActivity extends Activity {
         initListener();
     }
 
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+    }
+
     private void initView() {
         gv_groupdetail = findViewById(R.id.gv_groupdetail);
         bt_groupdetail_out = findViewById(R.id.bt_groupdetail_out);
         tv_groupdetail_groupname = findViewById( R.id.tv_groupdetail_groupname );
         tv_groupdetail_describe = findViewById( R.id.tv_groupdetail_describe );
         toolbar = findViewById( R.id.toolbar );
+
+        // 设置toolbar
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     //获取传递过来的数据

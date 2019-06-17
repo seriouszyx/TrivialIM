@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#AB82FF"
+        android:background="#00ACFF"
         app:title="群信息"
         app:titleTextColor="@color/btn_white_normal">
     </android.support.v7.widget.Toolbar>

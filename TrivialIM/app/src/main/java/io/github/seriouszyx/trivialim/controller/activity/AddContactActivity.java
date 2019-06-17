@@ -13,13 +13,14 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 
 // 添加联系人页面
-public class AddContactActivity extends Activity {
+public class AddContactActivity extends BaseActivity {
 
     private TextView tv_add_find;
     private EditText et_add_name;
@@ -37,12 +38,19 @@ public class AddContactActivity extends Activity {
         initListener();
     }
 
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+    }
+
     private void initView() {
         tv_add_find = findViewById(R.id.tv_add_find);
         et_add_name = findViewById(R.id.et_add_name);
         rl_add = findViewById(R.id.rl_add);
         tv_add_name = findViewById(R.id.tv_add_name);
         bt_add_add = findViewById(R.id.bt_add_add);
+
+        findViewById(R.id.rl_add_contact_title).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
     }
 
     private void initListener() {

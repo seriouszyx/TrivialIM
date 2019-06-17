@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.List;
 
@@ -23,11 +24,16 @@ import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.InvitationInfo;
 import io.github.seriouszyx.trivialim.utils.Constant;
 //邀请信息列表页面
-public class InviteActivity extends Activity {
+public class InviteActivity extends BaseActivity {
 
     private ListView lv_invite;
     private InviteAdapter inviteAdapter;
     private LocalBroadcastManager mLBM;
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
+    }
 
     private BroadcastReceiver InviteChangedReceiver = new BroadcastReceiver() {
         @Override

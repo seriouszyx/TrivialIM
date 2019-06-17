@@ -14,6 +14,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroup;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.adapter.GroupListAdapter;
 import io.github.seriouszyx.trivialim.model.Model;
 
-public class GroupListActivity extends Activity {
+public class GroupListActivity extends BaseActivity {
 
     private ListView lv_grouplist;
     private GroupListAdapter groupListAdapter;
@@ -38,6 +39,11 @@ public class GroupListActivity extends Activity {
         initData();
         
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initListener() {

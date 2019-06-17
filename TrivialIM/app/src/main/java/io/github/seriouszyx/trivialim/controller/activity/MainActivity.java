@@ -7,12 +7,14 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.widget.RadioGroup;
 
+import com.jaeger.library.StatusBarUtil;
+
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.controller.fragment.ChatFragment;
 import io.github.seriouszyx.trivialim.controller.fragment.ContactListFragment;
 import io.github.seriouszyx.trivialim.controller.fragment.SettingFragment;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
 
     private  RadioGroup rg_main;
     private  ChatFragment chatFragment;
@@ -26,6 +28,11 @@ public class MainActivity extends FragmentActivity {
         initView();
         initDate();
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initView() {

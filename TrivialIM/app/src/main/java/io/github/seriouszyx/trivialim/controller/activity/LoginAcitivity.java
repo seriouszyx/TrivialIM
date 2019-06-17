@@ -2,8 +2,10 @@ package io.github.seriouszyx.trivialim.controller.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -13,18 +15,20 @@ import android.widget.Toast;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
 import io.github.seriouszyx.trivialim.model.bean.UserInfo;
 
 // 登录页面
-public class LoginAcitivity extends Activity {
+public class LoginAcitivity extends BaseActivity {
 
     private EditText et_login_name;
     private EditText et_login_pwd;
     private Button bt_login_regist;
     private Button bt_login_login;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,11 @@ public class LoginAcitivity extends Activity {
 
         // 初始化监听
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     private void initListener() {
@@ -157,5 +166,6 @@ public class LoginAcitivity extends Activity {
          et_login_pwd = findViewById(R.id.et_login_pwd);
          bt_login_regist = findViewById(R.id.bt_login_regist);
          bt_login_login = findViewById(R.id.bt_login_login);
+
     }
 }

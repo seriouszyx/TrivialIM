@@ -15,6 +15,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMGroupManager;
 import com.hyphenate.chat.EMGroupOptions;
 import com.hyphenate.exceptions.HyphenateException;
+import com.jaeger.library.StatusBarUtil;
 
 import io.github.seriouszyx.trivialim.R;
 import io.github.seriouszyx.trivialim.model.Model;
@@ -22,7 +23,7 @@ import io.github.seriouszyx.trivialim.model.Model;
 /**
  * 创建新群页面
  */
-public class NewGroupActivity extends Activity {
+public class NewGroupActivity extends BaseActivity {
 
     private EditText et_newgroup_name;
     private EditText et_newgroup_desc;
@@ -37,6 +38,11 @@ public class NewGroupActivity extends Activity {
 
         initView();
         initListener();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     //初始化view

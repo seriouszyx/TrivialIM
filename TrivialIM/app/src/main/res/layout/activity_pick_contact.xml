@@ -9,9 +9,9 @@
     tools:context=".controller.activity.PickContactActivity">
 
     <RelativeLayout
+        android:id="@+id/rl_pick"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@android:color/holo_blue_light">
+        android:layout_height="60dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
