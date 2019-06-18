@@ -1,2 +1,9 @@
 # IM
-安卓程序设计大作业 即时通讯软件
+
+## Demo
+
+- [Click here to install](https://www.pgyer.com/TrivialIM)
+
+- Scan QRcode
+
+![Installation QRcode](imgs/install.png)
